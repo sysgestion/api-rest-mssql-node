@@ -7,11 +7,12 @@ const db = require('../db/db');
 
 app.get('/sp1076', (req, res) => {
     
-    let fecini = req.body.fecini || new Date(2019, 0, 1);
-    let fecter = req.body.fecter || new Date(2019, 4, 31);
-    let codven = req.body.codven || 0;
-    let codloc = req.body.codloc || 0;
-    
+    let fecini = new Date(req.query.fecini) || new Date(2019, 0, 1);
+    let fecter = new Date(req.query.fecter) || new Date(2019, 4, 31);
+    let codven = parseInt(req.query.codven) || 0;
+    let codloc = parseInt(req.query.codloc) || 0;
+
+        
     (async () => {
         try {
             let pool = await sql.connect(config.configMssql);
@@ -29,8 +30,8 @@ app.get('/sp1076', (req, res) => {
                 .query('select * from ' + tablaOutputSp);
 
             res.json({
-                ok:true,
-                data:resultTabla.recordset
+                ok: true,
+                data: resultTabla.recordset
             });
 
             sql.close();
@@ -45,6 +46,39 @@ app.get('/sp1076', (req, res) => {
         }
     })()
 });
+
+
+app.get('/tablas', (req, res) => {
+    (async () => {
+        try {
+            let pool = await sql.connect(config.configMssql);
+
+            let resultTablaVen = await pool.request()
+                .query('select ve_codven, ve_nomven from maeven');
+
+            let resultTablaLoc = await pool.request()
+                .query('select lc_codloc, lc_nomloc from maeloc');
+
+            res.json({
+                ok: true,
+                vendedores: resultTablaVen.recordset,
+                locales: resultTablaLoc.recordset
+            });
+
+            sql.close();
+        } catch (err) {
+            res.json({
+                ok:false,
+                nombre: err.name,
+                mensaje: err.message,
+                err
+            });
+            sql.close();
+        }
+    })()
+});
+
+
 
 
 
