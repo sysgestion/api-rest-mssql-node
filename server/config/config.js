@@ -1,3 +1,8 @@
+
+//use el archivo .env para ver las variables locales
+require('dotenv').config();
+
+
 //process, obj global que existe mientras corre la app de node y cambia dependiendo de el entorno donde este la app
 
 
@@ -38,16 +43,16 @@ process.env.SEED_TOKEN = process.env.SEED_TOKEN || 'seed-desarrollo';
 //estos valores deben ser una variable de entorno en el servidor
 //CONFIG MSSQL
 const configMssql = {
-    user: 'sa',
-    password: 'siemssg65',
-    server: 'clientes.siems.cl', // instancia
-    database: 'a000_sysges98',
-    port: 1433, // por defecto 1433
+    user: process.env.USER_BD,
+    password: process.env.PWD_BD,
+    server: process.env.HOSTNAME_BD, // instancia
+    database: process.env.NAME_BD,
+    port: parseInt(process.env.PORT_BD), // por defecto 1433
     options: {
         encrypt: false // true si es windows azure
     },
     pool: {
-        max: 10,
+        max: 20,
         min: 0,
         idleTimeoutMillis: 30000
     }
@@ -57,18 +62,18 @@ process.env.CONFIGMSSQL = process.env.CONFIGMSSQL || configMssql; //esto no me e
 
 //CONFIG TEDIOUS
 const configTedious = {
-    server: "clientes.siems.cl",
+    server: process.env.HOSTNAME_BD,
     options: { encrypt: false }, // true si es windows azure
     authentication: {
         type: "default",
         options: {
-            userName: "sa",
-            password: "siemssg65",
+            userName: process.env.USER_BD,
+            password: process.env.PWD_BD,
         }
     },
     options: {
-        port: 1433,
-        database: 'a000_sysges99'
+        port: parseInt(process.env.PORT_BD),
+        database: process.env.NAME_BD
     }
 };
 
