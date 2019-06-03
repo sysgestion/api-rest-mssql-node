@@ -59,4 +59,42 @@ app.get('/notasventa', (req, res) => {
 });
 
 
+app.get('/clientes', (req, res) => {
+
+    let activos = parseInt(req.query.activos) || 0;  //int
+
+    (async () => {
+        try {
+            let pool = await sql.connect(config.configMssql);
+
+            let query = `select cl_rutcli, cl_codsuc, cl_digcli, cl_nomcli from maecli`;
+
+            /* si el parametro viene en cero no entrara al if y no pondra el where, trayendo asi todos los clientes */
+            if (activos != 0) {
+                query = query + ` where cl_activo = ${activos}`;
+            }
+        
+            let result = await pool.request().query(query);
+
+            res.json({
+                ok: true,
+                data: result.recordset,
+                cant: result.rowsAffected[0]
+            });
+
+            sql.close();
+        } catch (err) {
+            res.json({
+                ok:false,
+                nombre: err.name,
+                mensaje: err.message,
+                err
+            });
+            sql.close();
+        }
+    })()
+});
+
+
+
 module.exports = app;
