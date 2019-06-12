@@ -96,5 +96,35 @@ app.get('/clientes', (req, res) => {
 });
 
 
+app.get('/notaventa', (req, res) => {
+    
+    let folio = new Date(req.query.folio);
+    
+    (async () => {
+        try {
+            let pool = await sql.connect(config.configMssql);
+            let resultSP = await pool.request()
+                .input('NumNot', sql.Int, folio)
+                .execute('SP_5001_DevuelveDantosNV');
+
+            res.json({
+                ok: true,
+                data: resultSP.recordset
+            });
+
+            sql.close();
+        } catch (err) {
+            res.json({
+                ok:false,
+                nombre: err.name,
+                mensaje: err.message,
+                err
+            });
+            sql.close();
+        }
+    })()
+});
+
+
 
 module.exports = app;
