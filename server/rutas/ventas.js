@@ -98,7 +98,7 @@ app.get('/clientes', (req, res) => {
 
 app.get('/notaventa', (req, res) => {
     
-    let folio = new Date(req.query.folio);
+    let folio = req.query.folio;
 
     (async () => {
         try {
