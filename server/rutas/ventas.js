@@ -104,9 +104,17 @@ app.get('/notaventa', (req, res) => {
         try {
             let pool = await sql.connect(config.configMssql);
             let resultSP = await pool.request()
-                .input('NumNot', sql.Int, parseInt(folio))
-                .execute('SP_5001_DevuelveDantosNV');
+                .input('NumNot', sql.Int, parseInt(folio)) //parseInt(folio)
+                .execute('SP_5001_DevuelveDatosNV');
 
+            if(resultSP.recordset.length === 0){
+                sql.close();
+                return res.json({
+                    ok: false,
+                    message: 'DOC_NO_EXISTE'
+                });
+            }
+            
             res.json({
                 ok: true,
                 data: resultSP.recordset
