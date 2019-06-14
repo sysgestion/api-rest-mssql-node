@@ -59,26 +59,22 @@ app.get('/notasventa', (req, res) => {
 });
 
 
-app.get('/clientes', (req, res) => {
+app.get('/autorizarnotaventa', (req, res) => {
 
-    let activos = parseInt(req.query.activos) || 0;  //int
+    let estado = parseInt(req.query.estado);  //int
+    let folio = parseInt(req.query.folio);  //int
 
     (async () => {
         try {
             let pool = await sql.connect(config.configMssql);
 
-            let query = `select cl_rutcli, cl_codsuc, cl_digcli, cl_nomcli from maecli`;
-
-            /* si el parametro viene en cero no entrara al if y no pondra el where, trayendo asi todos los clientes */
-            if (activos != 0) {
-                query = query + ` where cl_activo = ${activos}`;
-            }
-        
+            let query = `update encnot set en_autori = ${estado}, en_dataut = 'ECV / ${new Date()}' where en_numnot = ${folio}`;
+            
             let result = await pool.request().query(query);
 
             res.json({
                 ok: true,
-                data: result.recordset,
+                estado: estado,
                 cant: result.rowsAffected[0]
             });
 
