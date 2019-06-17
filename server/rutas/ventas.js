@@ -68,7 +68,13 @@ app.get('/autorizarnotaventa', (req, res) => {
         try {
             let pool = await sql.connect(config.configMssql);
 
-            let query = `update encnot set en_autori = ${estado}, en_dataut = 'ECV / ${new Date()}' where en_numnot = ${folio}`;
+            let query;
+
+            if(estado > 0){
+                query = `update encnot set en_autori = 1, en_rechaz = 0, en_dataut = 'ECV / ${new Date()}' where en_numnot = ${folio}`
+            }else{
+                query = `update encnot set en_autori = 0, en_rechaz = 1, en_dataut = 'ECV / ${new Date()}' where en_numnot = ${folio}`
+            }
             
             let result = await pool.request().query(query);
 
