@@ -3,7 +3,7 @@ const app = express();
 const sql = require('mssql');
 const config = require('../config/config');
 const db = require('../db/db');
-config.configMssql.database = 'a000_sysgesNC';
+config.configMssql.database = 'a000_sysges99';
 
 app.get('/sp1076', (req, res) => {
     
