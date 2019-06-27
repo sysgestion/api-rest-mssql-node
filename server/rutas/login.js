@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const sql = require('mssql');
 const config = require('../config/config');
+config.configMssql.database = 'a000_sysgesNC';
 
 
 app.post('/login', (req, res) => {
@@ -11,7 +12,6 @@ app.post('/login', (req, res) => {
 
     (async () => {
         try {
-            config.configMssql.database = 'a000_sysgesNC';
             let pool = await sql.connect(config.configMssql);
             let query = `select * from nucusr_w where correo = '${correo}'`
             let result = await pool.request().query(query);
