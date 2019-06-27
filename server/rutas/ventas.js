@@ -3,7 +3,6 @@ const app = express();
 const sql = require('mssql');
 const config = require('../config/config');
 const db = require('../db/db');
-config.configMssql.database = 'a000_sysges99';
 
 app.get('/notasventa', (req, res) => {
     
@@ -11,9 +10,10 @@ app.get('/notasventa', (req, res) => {
     let hasta = req.query.hasta || '';  //string
     let codven = parseInt(req.query.codven) || 0; //int
     let rut = parseInt(req.query.rut) || 0;  //int
-
+    
     (async () => {
         try {
+            config.configMssql.database = 'a000_sysges99';
             let pool = await sql.connect(config.configMssql);
 
             let query = `select en_codven, en_numnot, en_rutcli, en_digcli, en_fecemi,
@@ -67,6 +67,7 @@ app.get('/autorizarnotaventa', (req, res) => {
 
     (async () => {
         try {
+            config.configMssql.database = 'a000_sysges99';
             let pool = await sql.connect(config.configMssql);
 
             let query;
@@ -105,6 +106,7 @@ app.get('/notaventa', (req, res) => {
 
     (async () => {
         try {
+            config.configMssql.database = 'a000_sysges99';
             let pool = await sql.connect(config.configMssql);
             let resultSP = await pool.request()
                 .input('NumNot', sql.Int, parseInt(folio)) //parseInt(folio)
