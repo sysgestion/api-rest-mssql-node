@@ -10,11 +10,12 @@ app.get('/sp1076', (req, res) => {
     let fecter = new Date(req.query.fecter) || new Date(2019, 4, 31);
     let codven = parseInt(req.query.codven) || 0;
     let codloc = parseInt(req.query.codloc) || 0;
+    let emp = req.query.emp;
 
         
     (async () => {
         try {
-            config.configMssql.database = 'a000_sysges99';
+            config.configMssql.database = 'a000_sysges'+ emp;
             let pool = await sql.connect(config.configMssql);
             let resultSP = await pool.request()
                 .output('NombreTabla', sql.VarChar(50))
@@ -49,9 +50,12 @@ app.get('/sp1076', (req, res) => {
 
 
 app.get('/tablas', (req, res) => {
+
+    let emp = req.query.emp;
+
     (async () => {
         try {
-            config.configMssql.database = 'a000_sysges99';
+            config.configMssql.database = 'a000_sysges'+ emp;
             let pool = await sql.connect(config.configMssql);
 
             let resultTablaVen = await pool.request()

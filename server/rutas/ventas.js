@@ -13,7 +13,6 @@ app.get('/notasventa', (req, res) => {
     
     (async () => {
         try {
-            config.configMssql.database = 'a000_sysges99';
             let pool = await sql.connect(config.configMssql);
 
             let query = `select en_codven, en_numnot, en_rutcli, en_digcli, en_fecemi,
@@ -64,10 +63,11 @@ app.get('/autorizarnotaventa', (req, res) => {
 
     let estado = parseInt(req.query.estado);  //int
     let folio = parseInt(req.query.folio);  //int
+    let emp = req.query.emp;
 
     (async () => {
         try {
-            config.configMssql.database = 'a000_sysges99';
+            config.configMssql.database = 'a000_sysges'+ emp;
             let pool = await sql.connect(config.configMssql);
 
             let query;
@@ -103,10 +103,11 @@ app.get('/autorizarnotaventa', (req, res) => {
 app.get('/notaventa', (req, res) => {
     
     let folio = req.query.folio;
+    let emp = req.query.emp;
 
     (async () => {
         try {
-            config.configMssql.database = 'a000_sysges99';
+            config.configMssql.database = 'a000_sysges'+ emp;
             let pool = await sql.connect(config.configMssql);
             let resultSP = await pool.request()
                 .input('NumNot', sql.Int, parseInt(folio)) //parseInt(folio)
