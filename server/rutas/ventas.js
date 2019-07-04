@@ -67,7 +67,8 @@ app.get('/autorizarnotaventa', (req, res) => {
 
     (async () => {
         try {
-            config.configMssql.database = 'a000_sysges'+ emp;
+            config.configMssql.database = process.env.NAME + emp;
+
             let pool = await sql.connect(config.configMssql);
 
             let query;
@@ -107,7 +108,8 @@ app.get('/notaventa', (req, res) => {
 
     (async () => {
         try {
-            config.configMssql.database = 'a000_sysges'+ emp;
+            config.configMssql.database = process.env.NAME + emp;
+
             let pool = await sql.connect(config.configMssql);
             let resultSP = await pool.request()
                 .input('NumNot', sql.Int, parseInt(folio)) //parseInt(folio)

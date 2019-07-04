@@ -15,7 +15,8 @@ app.get('/sp1076', (req, res) => {
         
     (async () => {
         try {
-            config.configMssql.database = 'a000_sysges'+ emp;
+            config.configMssql.database = process.env.NAME + emp;
+
             let pool = await sql.connect(config.configMssql);
             let resultSP = await pool.request()
                 .output('NombreTabla', sql.VarChar(50))
@@ -55,7 +56,9 @@ app.get('/tablas', (req, res) => {
 
     (async () => {
         try {
-            config.configMssql.database = 'a000_sysges'+ emp;
+            
+            config.configMssql.database = process.env.NAME + emp;
+            
             let pool = await sql.connect(config.configMssql);
 
             let resultTablaVen = await pool.request()

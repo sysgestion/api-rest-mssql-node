@@ -11,7 +11,8 @@ app.post('/login', (req, res) => {
     
     (async () => {
         try {
-            config.configMssql.database = 'a000_sysgesNC';
+            config.configMssql.database = process.env.NAME + 'NC';
+
             let pool = await sql.connect(config.configMssql);
             let query = `select * from nucusr_w where correo = '${correo}'`
             let result = await pool.request().query(query);

@@ -29,6 +29,11 @@ process.env.CADUCIDAD_TOKEN = '1h' //60 * 60 * 24 * 30; //esto serian 30 dias, (
 
 
 
+
+
+
+
+
 //=======================
 // seed del token, autenticacion
 //=======================
@@ -57,6 +62,8 @@ const configMssql = {
         idleTimeoutMillis: 30000
     }
 };
+
+process.env.NAME = configMssql.database.substr(configMssql.database-2, configMssql.database.length);
 
 process.env.CONFIGMSSQL = process.env.CONFIGMSSQL || configMssql; //esto no me esta retornando un obj entonce la exporte abajo
 
